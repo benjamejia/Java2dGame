@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.plaf.DimensionUIResource;
 
 import entity.Player;
-import main.tile.TileManager;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
 
