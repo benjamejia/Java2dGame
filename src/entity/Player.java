@@ -80,10 +80,26 @@ public class Player extends Entity{
 
         if (collisionOn == false) {
             switch (direction) {
-                case "up":    entityY -= speed; break;
-                case "down":  entityY += speed; break;
-                case "left":  entityX -= speed; break;
-                case "right": entityX += speed; break;
+                case "up":    
+                    entityY -= speed;
+                    if(keyH.leftPressed) entityX -= speed;
+                    if(keyH.rightPressed) entityX += speed;
+                    break;
+                case "down":  
+                    entityY += speed; 
+                    if(keyH.leftPressed) entityX -= speed;
+                    if(keyH.rightPressed) entityX += speed;
+                    break;
+                case "left":  
+                    entityX -= speed;
+                    if(keyH.upPressed) entityY -= speed;
+                    if(keyH.downPressed) entityY += speed;
+                    break;
+                case "right": 
+                    entityX += speed;
+                    if(keyH.upPressed) entityY -= speed;
+                    if(keyH.downPressed) entityY += speed; 
+                    break;
             }
         }
 
