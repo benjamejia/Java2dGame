@@ -12,8 +12,8 @@ import main.GamePanel;
 public class TileManager {
 
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
     public TileManager(GamePanel gp){
         this.gp = gp;
@@ -32,6 +32,7 @@ public class TileManager {
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/wall.png"));
+            tile[1].colission = true;
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/water.png"));
@@ -41,9 +42,11 @@ public class TileManager {
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/three.png"));
+            tile[4].colission = true;
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/firePit.png"));
+            tile[5].colission = true;
 
             tile[6] = new Tile();
             tile[6].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/stone.png"));
@@ -52,7 +55,7 @@ public class TileManager {
             tile[7].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/lightStone.png"));
 
             tile[8] = new Tile();
-            tile[8].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/waterblocks.png"));
+            tile[8].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/waterBlocks.png"));
 
             tile[9] = new Tile();
             tile[9].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/dirtBlock.png"));
@@ -106,8 +109,13 @@ public class TileManager {
                 int screenX = worldX - gp.player.entityX + gp.player.screenX;
                 int screenY = worldY - gp.player.entityY + gp.player.screenY;
 
-                g2.drawImage(tile[tileNum].image,screenX,screenY, gp.tileSize,gp.tileSize, null);
-            }
+                if( worldX + gp.tileSize > gp.player.entityX - gp.player.screenX &&
+                    worldX - gp.tileSize < gp.player.entityX + gp.player.screenX &&
+                    worldY + gp.tileSize > gp.player.entityY - gp.player.screenY &&
+                    worldY - gp.tileSize < gp.player.entityY + gp.player.screenY) {
+                        g2.drawImage(tile[tileNum].image,screenX,screenY, gp.tileSize,gp.tileSize, null);
+                    };   
+                }
         }
     }
 }

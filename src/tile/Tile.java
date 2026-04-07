@@ -6,7 +6,4 @@ public class Tile {
 
     public BufferedImage image;
     public boolean colission = false;
-
-
-
 }

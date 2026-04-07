@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -24,14 +25,20 @@ public class Player extends Entity{
         screenX = gp.screenWidth / 2 - (gp.tileSize/2);
         screenY = gp.screenHeigth / 2 - (gp.tileSize/2);
 
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
+
         setDefaultValues();
         getPLayerImage();
     }
 
     public void setDefaultValues() {
 
-        entityX = gp.tileSize * 2;
-        entityY = gp.tileSize * 11;
+        entityX = gp.tileSize * 20;
+        entityY = gp.tileSize * 46;
         speed = 4;
         direction = "down";
     }
@@ -46,44 +53,54 @@ public class Player extends Entity{
             down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/S2.png"));
             left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/A1.png"));
             left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/A2.png"));
-            rigth1 = ImageIO.read(getClass().getResourceAsStream("/res/player/D1.png"));
-            rigth2 = ImageIO.read(getClass().getResourceAsStream("/res/player/D2.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/D1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/D2.png"));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void update(){
-        if(keyH.upPressed == true){
+    public void update() {
+
+    if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+        
+        if (keyH.upPressed) {
             direction = "up";
-            entityY -= speed;
-            spriteCounter++;
-        }
-        else if(keyH.downPressed == true){
+        } else if (keyH.downPressed) {
             direction = "down";
-            entityY += speed;
-            spriteCounter++;
-        }
-        else if(keyH.leftPressed == true){
+        } else if (keyH.leftPressed) {
             direction = "left";
-            entityX -= speed;
-            spriteCounter++;
+        } else if (keyH.rightPressed) {
+            direction = "right"; 
         }
-        else if(keyH.rightPressed == true){
-            direction = "rigth";
-            entityX += speed;
-            spriteCounter++;
+
+        collisionOn = false;
+        gp.collisionChecker.checktail(this);
+
+        if (collisionOn == false) {
+            switch (direction) {
+                case "up":    entityY -= speed; break;
+                case "down":  entityY += speed; break;
+                case "left":  entityX -= speed; break;
+                case "right": entityX += speed; break;
+            }
         }
-        if(spriteCounter > 5){
-            if(spriteNum == 1){
+
+        spriteCounter++;
+        if (spriteCounter > 12) { 
+            if (spriteNum == 1) {
                 spriteNum = 2;
-            }else if(spriteNum == 2){
+            } else if (spriteNum == 2) {
                 spriteNum = 1;
             }
             spriteCounter = 0;
         }
+    } 
+    else {
+        spriteNum = 1; 
     }
+}
 
     public void draw(Graphics2D g2){
 
@@ -114,12 +131,12 @@ public class Player extends Entity{
                     image = left2;
                 }
                 break;
-            case "rigth":
+            case "right":
                 if(spriteNum == 1){
-                    image = rigth1;
+                    image = right1;
                 }
                 if(spriteNum == 2){
-                    image = rigth2;
+                    image = right2;
                 }
                 break;
             default:
